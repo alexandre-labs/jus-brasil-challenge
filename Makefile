@@ -5,14 +5,6 @@ RED=\033[0;31m
 GREEN=\033[0;32m
 NC=\033[0m
 
-clean-build:
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
-	find . -name 'jus_brasil-*.dist-info' -exec rm -fr {} +
-
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
@@ -24,9 +16,13 @@ clean-test:
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-clean: clean-build clean-pyc clean-test
+clean: clean-pyc clean-test
 
 install: clean
+	pip install -U pip poetry
+	poetry install --no-dev -vvv
+
+install-dev: clean
 	pip install -U pip poetry
 	poetry install -vvv
 
@@ -57,3 +53,12 @@ test: lint
 	else \
 	echo "\n${RED}FAILURE: One or more tests have failed.${NC}\n" && exit 1 ; \
 	fi
+
+run-dev:
+	poetry run uvicorn jus_brasil:app --host 0.0.0.0 --port 8080
+
+dbuild: clean
+	docker build -t jus-brasil-backend-challenge .
+
+drun:
+	docker run -p 8080:8080 -it jus-brasil-backend-challenge
