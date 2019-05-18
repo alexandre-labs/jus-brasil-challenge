@@ -27,6 +27,7 @@ clean-test:
 clean: clean-build clean-pyc clean-test
 
 install: clean
+	pip install -U pip poetry
 	poetry install -vvv
 
 update-deps: clean
