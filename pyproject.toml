@@ -20,6 +20,11 @@ black = {version = "^18.3-alpha.0",allows-prereleases = true}
 pre-commit = {version = "^1.16",allows-prereleases = true}
 pytest-watch = {version = "^4.2",allows-prereleases = true}
 flake8-mypy = {version = "^17.8",allows-prereleases = true}
+pytest-asyncio = "^0.10.0"
+hypothesis = "^4.23"
+pytest-mock = "^1.10"
+responses = "^0.10.6"
+aresponses = "^1.1"
 
 [tool.black]
 # Considering it can
