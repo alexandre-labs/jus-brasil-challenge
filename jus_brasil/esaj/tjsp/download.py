@@ -1,5 +1,4 @@
 import re
-import re.Match
 import typing as t
 
 import aiohttp
@@ -33,7 +32,7 @@ async def build_query_url(base_url: str, process_number: str) -> str:
 
 
 async def get_process_page(session: aiohttp.ClientSession, process_url: str):
-    async with session.get(process_url, verify_ssl=False) as response:
+    async with session.get(process_url, ssl=False) as response:
         return await response.text()
 
 
