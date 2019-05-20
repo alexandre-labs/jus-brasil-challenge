@@ -42,3 +42,79 @@ async def test_process_details(cpopg_process_page):
     assert process_details["process_control_number"] == "2015/001380"
     assert process_details["process_judge"] == "Márcia Blanes"
     assert process_details["process_action_value"] == "R$ 866.000,00"
+
+
+@pytest.mark.asyncio
+async def test_process_parts(cpopg_process_page):
+    """Fixture details:
+         Partes do processo
+
+        Exibindo todas as partes.
+        Reqte:  	DOLCE DUO COMÉRCIO VAREJISTA DE DOCES BALAS BOMBONS E SEMELHANTES LTDA ME
+        Advogada:  Paula Rodrigues da Silva
+        Advogado:  Diego Gomes Dias
+        Advogada:  Karina de Almeida Batistuci
+        Reprtate:  MARIANA REBELLO MARQUES DA COSTA SANTOS
+        Reqte:  	REBELLOS COMÉRCIO VAREJISTA DOCES BALAS BOMBONS LTDA
+        Advogada:  Paula Rodrigues da Silva
+        Reprtate:  MARIANA REBELLO MARQUES DA COSTA SANTOS
+        Reqte:  	MARIANA REBELLO MARQUES DA COSTA SANTOS
+        Advogada:  Paula Rodrigues da Silva
+        Reqte:  	FÁBIO FURQUIM DA COSTA SANTOS
+        Advogada:  Paula Rodrigues da Silva
+        Reqte:  	YARA SILVIA REBELLO
+        Advogada:  Paula Rodrigues da Silva
+        Reqdo:  	FRANQUIA SHOW ASSESSORIA EM NEGÓCIOS LTDA
+        Advogado:  Andre Boschetti Oliva
+        Reqdo:  	IBAC INDÚSTRIA BRASILEIRA DE ALIMENTOS E CHOCOLATES LTDA
+        Advogado:  Andre Boschetti Oliva
+    """
+
+    process_soup = BeautifulSoup(cpopg_process_page, "lxml")
+    process_parts = await parsing.parse_process_parts(process_soup)
+
+    assert (
+        (
+            "Reqte:",
+            "DOLCE DUO COMÉRCIO VAREJISTA DE DOCES BALAS BOMBONS E SEMELHANTES LTDA ME",
+        ),
+        [
+            ("Advogada:", "Paula Rodrigues da Silva"),
+            ("Advogado:", "Diego Gomes Dias"),
+            ("Advogada:", "Karina de Almeida Batistuci"),
+            ("Reprtate:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+        ],
+    ) in process_parts, process_parts
+
+    assert (
+        ("Reqte:", "REBELLOS COMÉRCIO VAREJISTA DOCES BALAS BOMBONS LTDA"),
+        [
+            ("Advogada:", "Paula Rodrigues da Silva"),
+            ("Reprtate:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+        ],
+    ) in process_parts
+
+    assert (
+        ("Reqte:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+        [("Advogada:", "Paula Rodrigues da Silva")],
+    ) in process_parts
+
+    assert (
+        ("Reqte:", "FÁBIO FURQUIM DA COSTA SANTOS"),
+        [("Advogada:", "Paula Rodrigues da Silva")],
+    ) in process_parts
+
+    assert (
+        ("Reqte:", "YARA SILVIA REBELLO"),
+        [("Advogada:", "Paula Rodrigues da Silva")],
+    ) in process_parts
+
+    assert (
+        ("Reqdo:", "FRANQUIA SHOW ASSESSORIA EM NEGÓCIOS LTDA"),
+        [("Advogado:", "Andre Boschetti Oliva")],
+    ) in process_parts
+
+    assert (
+        ("Reqdo:", "IBAC INDÚSTRIA BRASILEIRA DE ALIMENTOS E CHOCOLATES LTDA"),
+        [("Advogado:", "Andre Boschetti Oliva")],
+    ) in process_parts
