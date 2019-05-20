@@ -1,3 +1,4 @@
+import asyncio
 import itertools as i
 import re
 import typing as t
@@ -76,3 +77,37 @@ async def parse_process_parts(process_soup: BeautifulSoup):
     grouped_parts = await _group_parts_and_lawyers(parsed_data)
 
     return grouped_parts
+
+
+async def _get_process_activity(process_activity: Tag):
+
+    pre_process_data: t.List[str] = list(
+        filter(
+            None,
+            map(
+                lambda td: re.sub(r"[\s\n]+", " ", td.text.strip()),
+                process_activity.select("td", attr={"class": ""}),
+            ),
+        )
+    )
+    return tuple(item.strip() for item in pre_process_data if item.strip())
+
+
+async def _get_all_process_activities(process_data: t.Iterable[Tag]):
+    process_activities_tasks = [
+        asyncio.create_task(_get_process_activity(tr)) for tr in process_data
+    ]
+
+    return [await res for res in asyncio.as_completed(process_activities_tasks)]
+
+
+async def parse_process_activities(process_soup: BeautifulSoup):
+
+    process_data: t.Iterable[Tag] = (
+        process_soup.find(text=re.compile("Movimentações"))
+        .find_next("table")
+        .select("tr")
+    )
+    process_activities = await _get_all_process_activities(process_data)
+
+    return list(filter(None, process_activities))
