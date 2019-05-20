@@ -10,15 +10,15 @@ from bs4.element import Tag
 async def _extract_process_details(process_data: str):
 
     process_details_regex = (
-        r"Processo:(?P<process_number>.+(?=Classe:))"
-        r"Classe:(?P<process_class>.+(?=Área:))"
-        r"Área:(?P<process_area>.+(?=Assunto:))"
-        r"Assunto:(?P<process_subject>.+(?=Outros assuntos:))"
-        r"Outros assuntos:(?P<process_subject_details>.+(?=Distribuição:))"
-        r"Distribuição:(?P<process_distribution>.+(?=Controle:))"
-        r"Controle:(?P<process_control_number>.+(?=Juiz:))"
-        r"Juiz:(?P<process_judge>.+(?=Valor da ação:))"
-        r"Valor da ação:(?P<process_action_value>.+)"
+        r"Processo:(?P<number>.+(?=Classe:))"
+        r"Classe:(?P<class>.+(?=Área:))"
+        r"Área:(?P<area>.+(?=Assunto:))"
+        r"Assunto:(?P<subject>.+(?=Outros assuntos:))"
+        r"Outros assuntos:(?P<subject_details>.+(?=Distribuição:))"
+        r"Distribuição:(?P<distribution>.+(?=Controle:))"
+        r"Controle:(?P<control_number>.+(?=Juiz:))"
+        r"Juiz:(?P<judge>.+(?=Valor da ação:))"
+        r"Valor da ação:(?P<action_value>.+)"
     )
     process_details = re.search(
         process_details_regex, re.sub("[\n\r\t]", " ", process_data)
@@ -118,7 +118,7 @@ async def parse_process(process_page: str):
     process_soup = BeautifulSoup(process_page, "lxml")
 
     return {
-        "process_details": await parse_process_details(process_soup),
-        "process_parts": await parse_process_parts(process_soup),
-        "process_activities": await parse_process_activities(process_soup),
+        "details": await parse_process_details(process_soup),
+        "parts": await parse_process_parts(process_soup),
+        "activities": await parse_process_activities(process_soup),
     }

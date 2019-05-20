@@ -28,20 +28,20 @@ async def test_process_details(cpopg_process_page):
     process_soup = BeautifulSoup(cpopg_process_page, "lxml")
     process_details = await parsing.parse_process_details(process_soup)
 
-    assert process_details["process_number"] == "1002298-86.2015.8.26.0271"
-    assert process_details["process_class"] == "Procedimento Comum Cível"
-    assert process_details["process_area"] == "Cível"
-    assert process_details["process_subject"] == "Franquia"
-    assert process_details["process_subject_details"] == (
+    assert process_details["number"] == "1002298-86.2015.8.26.0271"
+    assert process_details["class"] == "Procedimento Comum Cível"
+    assert process_details["area"] == "Cível"
+    assert process_details["subject"] == "Franquia"
+    assert process_details["subject_details"] == (
         "Indenização por Dano Material,Indenização por Dano Moral,"
         "Obrigações,Perdas e Danos"
     )
-    assert process_details["process_distribution"] == (
+    assert process_details["distribution"] == (
         "26/05/2015 às 18:31 - Livre 2ª Vara Cível - Foro de Itapevi"
     )
-    assert process_details["process_control_number"] == "2015/001380"
-    assert process_details["process_judge"] == "Márcia Blanes"
-    assert process_details["process_action_value"] == "R$ 866.000,00"
+    assert process_details["control_number"] == "2015/001380"
+    assert process_details["judge"] == "Márcia Blanes"
+    assert process_details["action_value"] == "R$ 866.000,00"
 
 
 @pytest.mark.asyncio
