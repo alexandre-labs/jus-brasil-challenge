@@ -111,3 +111,14 @@ async def parse_process_activities(process_soup: BeautifulSoup):
     process_activities = await _get_all_process_activities(process_data)
 
     return list(filter(None, process_activities))
+
+
+async def parse_process(process_page: str):
+
+    process_soup = BeautifulSoup(process_page, "lxml")
+
+    return {
+        "process_details": await parse_process_details(process_soup),
+        "process_parts": await parse_process_parts(process_soup),
+        "process_activities": await parse_process_activities(process_soup),
+    }
