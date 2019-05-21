@@ -5,7 +5,7 @@ from hypothesis import given
 from hypothesis import settings
 from hypothesis import strategies as st
 
-from jus_brasil.esaj.tjsp import download
+from jus_brasil.crawlers import download
 
 
 @pytest.mark.asyncio

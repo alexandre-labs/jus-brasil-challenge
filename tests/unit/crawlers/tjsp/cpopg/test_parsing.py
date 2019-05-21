@@ -2,7 +2,7 @@ import pytest
 from bs4 import BeautifulSoup
 
 
-from jus_brasil.esaj.tjsp.cpopg import parsing
+from jus_brasil.crawlers.tjsp.cpopg import parsing
 
 
 @pytest.mark.asyncio

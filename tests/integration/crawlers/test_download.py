@@ -1,7 +1,7 @@
 import aiohttp
 import pytest
 
-from jus_brasil.esaj.tjsp import download
+from jus_brasil.crawlers import download
 
 
 @pytest.mark.asyncio
