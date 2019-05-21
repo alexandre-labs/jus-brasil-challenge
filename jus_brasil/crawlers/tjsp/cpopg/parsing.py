@@ -16,9 +16,9 @@ async def _extract_process_details(process_data: str):
         r"Assunto:(?P<subject>.+(?=Outros assuntos:))"
         r"Outros assuntos:(?P<subject_details>.+(?=Distribuição:))"
         r"Distribuição:(?P<distribution>.+(?=Controle:))"
-        r"Controle:(?P<control_number>.+(?=Juiz:))"
+        r"Controle:(?P<control>.+(?=Juiz:))"
         r"Juiz:(?P<judge>.+(?=Valor da ação:))"
-        r"Valor da ação:(?P<action_value>.+)"
+        r"Valor da ação:(?P<action>.+)"
     )
     process_details = re.search(
         process_details_regex, re.sub("[\n\r\t]", " ", process_data)
