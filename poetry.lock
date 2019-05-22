@@ -1,5 +1,5 @@
 [[package]]
-category = "dev"
+category = "main"
 description = "Async http client/server framework (asyncio)"
 name = "aiohttp"
 optional = false
@@ -53,7 +53,7 @@ version = "1.2.0"
 pyyaml = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Timeout context manager for asyncio programs"
 name = "async-timeout"
 optional = false
@@ -69,7 +69,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.3.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
@@ -110,7 +110,7 @@ version = "1.6.0"
 six = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Universal encoding detector for Python 2 and 3"
 name = "chardet"
 optional = false
@@ -233,7 +233,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.4.3"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
@@ -269,7 +269,7 @@ python-versions = ">=3.4"
 version = "7.0.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "multidict implementation"
 name = "multidict"
 optional = false
@@ -626,7 +626,7 @@ python-versions = ">=3.4"
 version = "7.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Yet another URL library"
 name = "yarl"
 optional = false
@@ -646,7 +646,7 @@ python-versions = ">=2.7"
 version = "0.5.1"
 
 [metadata]
-content-hash = "0c94495055950c268ff162356163218a971621a20a2a2f7505b32d7fc4325774"
+content-hash = "d2dd242648cbc7f8ff363361e57804588a45b315f041474ebdb744872d8ed198"
 python-versions = "^3.7"
 
 [metadata.hashes]
