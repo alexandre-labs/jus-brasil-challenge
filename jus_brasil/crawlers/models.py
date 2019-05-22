@@ -23,14 +23,6 @@ class Part(BaseModel):
     identification: str
 
 
-class Judge(BaseModel):
-    name: str
-
-
-class Action(BaseModel):
-    value: str
-
-
 class Activity(BaseModel):
     date: str
     activity: str
@@ -45,9 +37,9 @@ class Process(BaseModel):
     subject_details: str
     distribution: str
     control: str
-    judge: Judge
-    action: Action
-    parts: t.List[Part]
+    judge: str
+    action: str
+    parts: t.List[t.List[Part]]
     activities: t.List[Activity]
 
     class Config:
