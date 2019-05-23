@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 
-async def _extract_process_details(process_data: str):
+
+async def _extract_process_details(process_data: str) -> t.Dict[str, str]:
 
     process_details_regex = (
         r"Processo:(?P<number>.+(?=Classe:))"
