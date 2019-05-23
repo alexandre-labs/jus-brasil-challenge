@@ -1,7 +1,7 @@
 import pytest
 from bs4 import BeautifulSoup
 
-
+from jus_brasil.crawlers.models import Activity, Part
 from jus_brasil.crawlers.tjsp.cpopg import parsing
 
 
@@ -39,9 +39,9 @@ async def test_process_details(cpopg_process_page):
     assert process_details["distribution"] == (
         "26/05/2015 às 18:31 - Livre 2ª Vara Cível - Foro de Itapevi"
     )
-    assert process_details["control_number"] == "2015/001380"
+    assert process_details["control"] == "2015/001380"
     assert process_details["judge"] == "Márcia Blanes"
-    assert process_details["action_value"] == "R$ 866.000,00"
+    assert process_details["action"] == "R$ 866.000,00"
 
 
 @pytest.mark.asyncio
@@ -73,51 +73,55 @@ async def test_process_parts(cpopg_process_page):
     process_soup = BeautifulSoup(cpopg_process_page, "lxml")
     process_parts = await parsing.parse_process_parts(process_soup)
 
-    assert (
-        (
-            "Reqte:",
-            "DOLCE DUO COMÉRCIO VAREJISTA DE DOCES BALAS BOMBONS E SEMELHANTES LTDA ME",
+    assert [
+        Part(
+            role="Reqte:",
+            identification=(
+                "DOLCE DUO COMÉRCIO VAREJISTA DE DOCES BALAS BOMBONS E SEMELHANTES LTDA ME"
+            ),
         ),
-        [
-            ("Advogada:", "Paula Rodrigues da Silva"),
-            ("Advogado:", "Diego Gomes Dias"),
-            ("Advogada:", "Karina de Almeida Batistuci"),
-            ("Reprtate:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
-        ],
-    ) in process_parts, process_parts
+        Part(role="Advogada:", identification="Paula Rodrigues da Silva"),
+        Part(role="Advogado:", identification="Diego Gomes Dias"),
+        Part(role="Advogada:", identification="Karina de Almeida Batistuci"),
+        Part(role="Reprtate:", identification="MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+    ] in process_parts, process_parts
 
-    assert (
-        ("Reqte:", "REBELLOS COMÉRCIO VAREJISTA DOCES BALAS BOMBONS LTDA"),
-        [
-            ("Advogada:", "Paula Rodrigues da Silva"),
-            ("Reprtate:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
-        ],
-    ) in process_parts
+    assert [
+        Part(
+            role="Reqte:",
+            identification="REBELLOS COMÉRCIO VAREJISTA DOCES BALAS BOMBONS LTDA",
+        ),
+        Part(role="Advogada:", identification="Paula Rodrigues da Silva"),
+        Part(role="Reprtate:", identification="MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+    ] in process_parts
 
-    assert (
-        ("Reqte:", "MARIANA REBELLO MARQUES DA COSTA SANTOS"),
-        [("Advogada:", "Paula Rodrigues da Silva")],
-    ) in process_parts
+    assert [
+        Part(role="Reqte:", identification="MARIANA REBELLO MARQUES DA COSTA SANTOS"),
+        Part(role="Advogada:", identification="Paula Rodrigues da Silva"),
+    ] in process_parts
 
-    assert (
-        ("Reqte:", "FÁBIO FURQUIM DA COSTA SANTOS"),
-        [("Advogada:", "Paula Rodrigues da Silva")],
-    ) in process_parts
+    assert [
+        Part(role="Reqte:", identification="FÁBIO FURQUIM DA COSTA SANTOS"),
+        Part(role="Advogada:", identification="Paula Rodrigues da Silva"),
+    ] in process_parts
 
-    assert (
-        ("Reqte:", "YARA SILVIA REBELLO"),
-        [("Advogada:", "Paula Rodrigues da Silva")],
-    ) in process_parts
+    assert [
+        Part(role="Reqte:", identification="YARA SILVIA REBELLO"),
+        Part(role="Advogada:", identification="Paula Rodrigues da Silva"),
+    ] in process_parts
 
-    assert (
-        ("Reqdo:", "FRANQUIA SHOW ASSESSORIA EM NEGÓCIOS LTDA"),
-        [("Advogado:", "Andre Boschetti Oliva")],
-    ) in process_parts
+    assert [
+        Part(role="Reqdo:", identification="FRANQUIA SHOW ASSESSORIA EM NEGÓCIOS LTDA"),
+        Part(role="Advogado:", identification="Andre Boschetti Oliva"),
+    ] in process_parts
 
-    assert (
-        ("Reqdo:", "IBAC INDÚSTRIA BRASILEIRA DE ALIMENTOS E CHOCOLATES LTDA"),
-        [("Advogado:", "Andre Boschetti Oliva")],
-    ) in process_parts
+    assert [
+        Part(
+            role="Reqdo:",
+            identification="IBAC INDÚSTRIA BRASILEIRA DE ALIMENTOS E CHOCOLATES LTDA",
+        ),
+        Part(role="Advogado:", identification="Andre Boschetti Oliva"),
+    ] in process_parts
 
 
 @pytest.mark.asyncio
@@ -145,7 +149,12 @@ async def test_process_activities(cpopg_process_page):
     process_activities = await parsing.parse_process_activities(process_soup)
 
     assert (
-        "04/03/2019",
-        "Suspensão do Prazo Prazo referente ao usuário foi alterado para "
-        "16/07/2019 devido à alteração da tabela de feriados",
-    ) in process_activities
+        Activity(
+            date="04/03/2019",
+            activity=(
+                "Suspensão do Prazo Prazo referente ao usuário foi alterado para "
+                "16/07/2019 devido à alteração da tabela de feriados"
+            ),
+        )
+        in process_activities
+    )
