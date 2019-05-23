@@ -15,8 +15,8 @@ async def _extract_process_details(process_data: str) -> t.Dict[str, str]:
         r"Processo:(?P<number>.+(?=Classe:))"
         r"Classe:(?P<class>.+(?=Área:))"
         r"Área:(?P<area>.+(?=Assunto:))"
-        r"Assunto:(?P<subject>.+(?=Outros assuntos:))"
-        r"Outros assuntos:(?P<subject_details>.+(?=Distribuição:))"
+        r"Assunto:(?P<subject>.+(?=Outros assuntos:)|(?=Distribuição:))"
+        r"(Outros assuntos:(?P<subject_details>.+(?=Distribuição:)))?"
         r"Distribuição:(?P<distribution>.+(?=Controle:))"
         r"Controle:(?P<control>.+(?=Juiz:))"
         r"Juiz:(?P<judge>.+(?=Valor da ação:))"
@@ -29,8 +29,9 @@ async def _extract_process_details(process_data: str) -> t.Dict[str, str]:
         raise ValueError
 
     return {
-        key: re.sub(" +", " ", value).strip()
-        for key, value in iter(process_details.groupdict().items())
+        # or "" because "Outros assuntos" is optional.
+        key: re.sub(" +", " ", value or "").strip()
+        for key, value in process_details.groupdict().items()
     }
 
 
