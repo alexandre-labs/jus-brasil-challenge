@@ -1,7 +1,7 @@
 from starlette.config import Config
 
 
-config = Config('../.env')
+config = Config("../.env")
 
 TJSP_PG = config("TJSP_PG", default="https://esaj.tjsp.jus.br/cpopg/search.do")
 TJSP_SG = config("TJSP_SG", default="https://esaj.tjsp.jus.br/cposg/search.do")
