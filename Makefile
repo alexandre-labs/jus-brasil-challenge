@@ -55,7 +55,7 @@ test: lint
 	fi
 
 run-dev:
-	poetry run uvicorn jus_brasil:app --host 0.0.0.0 --port 8080
+	poetry run uvicorn jus_brasil:app --reload --host 0.0.0.0 --port 8080
 
 dbuild: clean
 	docker build -t jus-brasil-backend-challenge .
