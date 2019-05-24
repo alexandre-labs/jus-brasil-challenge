@@ -55,5 +55,10 @@ class QueryInput(BaseModel):
     )
 
 
-class QueryOutPut(Process):
-    pass
+class QueryOutput(BaseModel):
+
+    first_juristiction: Process
+
+    second_juristiction: t.Optional[Process]
+
+    second_jurisdiction_appeal: t.Optional[Process]
