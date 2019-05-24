@@ -34,9 +34,7 @@ class Process(BaseModel):
     class_: str
     area: str
     subject: str
-    subject_details: str
     distribution: str
-    control: str
     judge: str
     action: str
     parts: t.List[t.List[Part]]
