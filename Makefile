@@ -54,8 +54,11 @@ test: lint
 	echo "\n${RED}FAILURE: One or more tests have failed.${NC}\n" && exit 1 ; \
 	fi
 
-run-dev:
+run-dev: clean
 	poetry run uvicorn jus_brasil:app --reload --host 0.0.0.0 --port 8080
+
+run: clean
+	poetry run gunicorn -w 8 -k uvicorn.workers.UvicornWorker jus_brasil:app
 
 dbuild: clean
 	docker build -t jus-brasil-backend-challenge .
