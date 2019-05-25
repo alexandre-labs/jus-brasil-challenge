@@ -77,10 +77,20 @@ async def execute_query(base_url: str, query_input: QueryInput):
         # TODO: If there is many processes urls, consider refactoring this function to
         # become an async generator too.
         return [
-            await parse_process(query_input.process_number, process_page)
+            await parse_process(
+                query_input.process_number,
+                process_page,
+                details_extractor=_extract_process_details,
+            )
             async for process_page in download_processes_pages(processes_urls)
         ]
 
     else:
 
-        return [await parse_process(query_input.process_number, query_result)]
+        return [
+            await parse_process(
+                query_input.process_number,
+                query_result,
+                details_extractor=_extract_process_details,
+            )
+        ]

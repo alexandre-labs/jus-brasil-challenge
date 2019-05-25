@@ -29,12 +29,12 @@ async def execute_crawler(query_input: QueryInput) -> QueryOutput:
 
     first_juristiction = await execute_crawler_first_jurisdiction(query_input)
     second_juristiction = await execute_crawler_second_jurisdiction(query_input)
-    second_jurisdiction_appeal = (
-        await execute_crawler_second_appeal_jurisdiction(query_input)
+    second_jurisdiction_appeal = await execute_crawler_second_appeal_jurisdiction(
+        query_input
     )
 
     return QueryOutput(
         first_juristiction=first_juristiction,
         second_juristiction=second_juristiction,
-        second_jurisdiction_appeal=second_jurisdiction_appeal
+        second_jurisdiction_appeal=second_jurisdiction_appeal,
     )

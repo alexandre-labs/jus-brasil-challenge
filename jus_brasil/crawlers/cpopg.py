@@ -47,7 +47,7 @@ async def execute_query(base_url: str, query_input: QueryInput):
     process = await parse_process(
         query_input.process_number,
         process_page,
-        details_extractor=_extract_process_details
+        details_extractor=_extract_process_details,
     )
 
     return process
