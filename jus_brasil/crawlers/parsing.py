@@ -9,41 +9,21 @@ from bs4.element import Tag
 from jus_brasil.crawlers import models
 
 
-async def _extract_process_details(process_data: str) -> t.Dict[str, str]:
-
-    process_details_regex = (
-        r"Processo:(?P<number>.+(?=Classe:))"
-        r"Classe:(?P<class>.+(?=Área:))"
-        r"Área:(?P<area>.+(?=Assunto:))"
-        r"Assunto:(?P<subject>.+(?=Outros assuntos:)|(?=Distribuição:))"
-        r"(Outros assuntos:(?P<subject_details>.+(?=Distribuição:)))?"
-        r"Distribuição:(?P<distribution>.+(?=Controle:))"
-        r"Controle:(?P<control>.+(?=Juiz:))"
-        r"Juiz:(?P<judge>.+(?=Valor da ação:))"
-        r"Valor da ação:(?P<action>.+)"
-    )
-    process_details = re.search(
-        process_details_regex, re.sub("[\n\r\t]", " ", process_data)
-    )
-    if not process_details:
-        raise ValueError
-
-    return {
-        # or "" because "Outros assuntos" is optional.
-        key: re.sub(" +", " ", value or "").strip()
-        for key, value in process_details.groupdict().items()
-    }
+async def _simplify_process_data(process_data: str) -> str:
+    return re.sub(" +", " ", re.sub("[\n\r\t]", " ", process_data))
 
 
-async def parse_process_details(process_soup: BeautifulSoup) -> t.Dict[str, str]:
+async def parse_process_details(
+    details_extractor: t.Callable, process_soup: BeautifulSoup
+) -> t.Dict[str, str]:
 
     raw_process_details = (
-        process_soup.find(text=re.compile("Dados do processo"))
+        process_soup.find(text=re.compile("Dados do processo", re.IGNORECASE))
         .find_next("table")
         .text.strip()
     )
 
-    return await _extract_process_details(raw_process_details)
+    return await details_extractor(raw_process_details)
 
 
 async def _extract_process_parts(parts_table: Tag) -> t.List[t.Tuple[str, str]]:
@@ -138,12 +118,15 @@ async def parse_process_activities(
     return process_activities
 
 
-async def parse_process(process_page: str) -> models.Process:
+async def parse_process(
+    process_number: str, process_page: str, details_extractor: t.Callable
+) -> models.Process:
 
     process_soup = BeautifulSoup(process_page, "lxml")
 
     return models.Process(
-        **(await parse_process_details(process_soup)),
+        **(await parse_process_details(details_extractor, process_soup)),
+        number=process_number,
         parts=(await parse_process_parts(process_soup)),
         activities=(await parse_process_activities(process_soup)),
     )
