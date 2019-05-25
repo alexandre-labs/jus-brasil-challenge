@@ -118,11 +118,27 @@ async def parse_process_activities(
     return process_activities
 
 
+async def ensure_process_exists(process_soup: BeautifulSoup):
+
+    verification = process_soup.find(
+        text=re.compile(
+            "Não existem informações disponíveis para os parâmetros informados.",
+            re.IGNORECASE,
+        )
+    )
+
+    return verification is None
+
+
 async def parse_process(
     process_number: str, process_page: str, details_extractor: t.Callable
 ) -> models.Process:
 
     process_soup = BeautifulSoup(process_page, "lxml")
+    process_exists = await ensure_process_exists(process_soup)
+
+    if process_exists is False:
+        return None
 
     return models.Process(
         **(await parse_process_details(details_extractor, process_soup)),
