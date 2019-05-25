@@ -12,8 +12,8 @@ uvicorn = "^0.7.1"
 aiohttp = "^3.5"
 pyparsing = "^2.4"
 gunicorn = "^19.9"
-beautifulsoup4 = "^4.7"
 lxml = "^4.3"
+beautifulsoup4 = {version = "^4.7",extras = ["lxml"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.5"
@@ -30,6 +30,7 @@ pytest-mock = "^1.10"
 responses = "^0.10.6"
 aresponses = "^1.1"
 flake8 = "^3.7"
+asynctest = "^0.13.0"
 
 [tool.black]
 # Considering it can
