@@ -12,7 +12,7 @@ RE_UNIFIED_YEAR_AND_JUS = r"^(?P<unif_year>[0-9]{7}\-[0-9]{2}\.[0-9]{4})\.[0-9]\
 
 async def _extract_unified_year_and_jurisdiction(
     process_number: str
-) -> t.Sequence[str]:  # noqa
+) -> t.Sequence[str]:
 
     match_strings = re.search(RE_UNIFIED_YEAR_AND_JUS, process_number)
     if not match_strings:
