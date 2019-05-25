@@ -133,7 +133,7 @@ async def ensure_process_exists(process_soup: BeautifulSoup):
 
 async def parse_process(
     process_number: str, process_page: str, details_extractor: t.Callable
-) -> models.Process:
+) -> t.Optional[models.Process]:
 
     process_soup = BeautifulSoup(process_page, "lxml")
     process_exists = await ensure_process_exists(process_soup)
