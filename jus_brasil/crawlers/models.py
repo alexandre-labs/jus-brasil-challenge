@@ -59,6 +59,6 @@ class QueryOutput(BaseModel):
 
     first_juristiction: Process
 
-    second_juristiction: t.Optional[Process]
+    second_juristiction: t.List[t.Optional[Process]]
 
-    second_jurisdiction_appeal: t.Optional[Process]
+    second_jurisdiction_appeal: t.List[t.Optional[Process]]
