@@ -10,9 +10,7 @@ from jus_brasil.crawlers.models import KnownCourts
 RE_UNIFIED_YEAR_AND_JUS = r"^(?P<unif_year>[0-9]{7}\-[0-9]{2}\.[0-9]{4})\.[0-9]\.[0-9]{2}\.(?P<jurisdiction>[0-9]{4})$"  # noqa
 
 
-async def _extract_unified_year_and_jurisdiction(
-    process_number: str
-) -> t.Sequence[str]:
+async def _extract_unified_year_and_jurisdiction(process_number: str) -> t.Sequence[str]:
 
     match_strings = re.search(RE_UNIFIED_YEAR_AND_JUS, process_number)
     if not match_strings:
@@ -39,7 +37,7 @@ async def get_second_jurisdiction(known_court: KnownCourts) -> str:
     return config.TJSP_SG if known_court == KnownCourts.tjsp else config.TJMS_SG
 
 
-async def get_second_jurisdiction_appeal(known_court: KnownCourts) -> t.Optional[str]:
+async def get_second_appeal_jurisdiction(known_court: KnownCourts) -> t.Optional[str]:
 
     if known_court == KnownCourts.tjsp:
         return config.TJSP_SG_REC
