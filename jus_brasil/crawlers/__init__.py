@@ -1,10 +1,32 @@
-from .models import KnownCourts, QueryInput, QueryOutPut
-from .tjsp.cpopg import crawler as tjsp_pg_crawler
+from jus_brasil.crawlers import cpopg, cposg, utils
+from jus_brasil.crawlers.models import KnownCourts, QueryInput, QueryOutput
 
 
-async def execute_crawler(query_input: QueryInput) -> QueryOutPut:
+async def get_all_urls(process_court: KnownCourts):
+    return (
+        await utils.get_first_jurisdiction(process_court),
+        await utils.get_second_jurisdiction(process_court),
+        await utils.get_second_jurisdiction_appeal(process_court),
+    )
 
-    if query_input.process_court == KnownCourts.tjsp:
-        return await tjsp_pg_crawler.execute_query(query_input)
+
+async def execute_crawler(query_input: QueryInput) -> QueryOutput:
+
+    first, second, second_appeal = await get_all_urls(query_input.process_court)
+
+    first_juristiction = await cpopg.execute_query(first, query_input)
+
+    second_juristiction = await cposg.execute_query(second, query_input)
+
+    if second_appeal:
+        second_jurisdiction_appeal = await cposg.execute_query(
+            second_appeal, query_input
+        )
     else:
-        raise NotImplementedError
+        second_jurisdiction_appeal = None
+
+    return QueryOutput(
+        first_juristiction=first_juristiction,
+        second_juristiction=second_juristiction,
+        second_jurisdiction_appeal=second_jurisdiction_appeal,
+    )
