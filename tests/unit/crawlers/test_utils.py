@@ -31,27 +31,33 @@ async def test_extract_unified_year_and_juristiction_invalid_number():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('court,expected', [
-    (utils.KnownCourts.tjsp, utils.config.TJSP_PG),
-    (utils.KnownCourts.tjms, utils.config.TJMS_PG),
-])
+@pytest.mark.parametrize(
+    "court,expected",
+    [
+        (utils.KnownCourts.tjsp, utils.config.TJSP_PG),
+        (utils.KnownCourts.tjms, utils.config.TJMS_PG),
+    ],
+)
 async def test_get_first_jurisdiction(court, expected):
     assert await utils.get_first_jurisdiction(court) == expected
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('court,expected', [
-    (utils.KnownCourts.tjsp, utils.config.TJSP_SG),
-    (utils.KnownCourts.tjms, utils.config.TJMS_SG),
-])
+@pytest.mark.parametrize(
+    "court,expected",
+    [
+        (utils.KnownCourts.tjsp, utils.config.TJSP_SG),
+        (utils.KnownCourts.tjms, utils.config.TJMS_SG),
+    ],
+)
 async def test_get_second_jurisdiction(court, expected):
     assert await utils.get_second_jurisdiction(court) == expected
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('court,expected', [
-    (utils.KnownCourts.tjsp, utils.config.TJSP_SG_REC),
-    (utils.KnownCourts.tjms, None),
-])
+@pytest.mark.parametrize(
+    "court,expected",
+    [(utils.KnownCourts.tjsp, utils.config.TJSP_SG_REC), (utils.KnownCourts.tjms, None)],
+)
 async def test_get_second_appeal_jurisdiction(court, expected):
     assert await utils.get_second_appeal_jurisdiction(court) == expected
