@@ -2,12 +2,29 @@
 
 The challenge description is available in the dir. `docs`.
 
+## Badges
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+
+
 ## Solution
 
 I used the challenge as an opportunity to learn more about asyncio and its
  ecosystem. It's fun and challenging, but a good approach (so far) to a solution
 based on IO bound.
 
+The code organization is really simple. As you can see in the commit history,
+I did start trying an approach using more modules, but at the end I could
+simplify it a bit and reuse the main parts.
+
+The challenge ask for an API to query processes in the courts TJSP and TJMS. So,
+the application has only two endpoints.
+
+## Endpoints
+
+The first endpoint is `/query` and thank to FastAPI the API gives a `/docs`
+endpoint, where we can try the API and based on types (Pydantic) access all the
+schemas (contracts) defined by the application.
 
 ### Stack
 
