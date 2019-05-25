@@ -4,10 +4,7 @@ import typing as t
 import aiohttp
 
 from jus_brasil import config
-from jus_brasil.crawlers.models import KnownCourts
-
-
-RE_UNIFIED_YEAR_AND_JUS = r"^(?P<unif_year>[0-9]{7}\-[0-9]{2}\.[0-9]{4})\.[0-9]\.[0-9]{2}\.(?P<jurisdiction>[0-9]{4})$"  # noqa
+from jus_brasil.crawlers.models import KnownCourts, RE_UNIFIED_YEAR_AND_JUS
 
 
 async def _extract_unified_year_and_jurisdiction(process_number: str) -> t.Sequence[str]:
