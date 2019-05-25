@@ -61,9 +61,11 @@ async def _group_parts_and_lawyers(
 
 async def parse_process_parts(process_soup: BeautifulSoup) -> t.List[t.List[models.Part]]:
 
-    parsed_data = await _extract_process_parts(
-        process_soup.select_one("#tableTodasPartes")
+    parts_table = (
+        process_soup.select_one("#tableTodasPartes") or
+        process_soup.select_one("#tablePartesPrincipais")
     )
+    parsed_data = await _extract_process_parts(parts_table)
 
     grouped_parts = await _group_parts_and_lawyers(parsed_data)
 
