@@ -26,6 +26,67 @@ The first endpoint is `/query` and thank to FastAPI the API gives a `/docs`
 endpoint, where we can try the API and based on types (Pydantic) access all the
 schemas (contracts) defined by the application.
 
+## Performance
+
+This is not a complete or really detailed approach, but I would like to share
+a real test.
+
+### Scenario
+
+* Network: My connection is `Claro 4g Max`.
+* I use the tool `hey` with its default settings.
+* I also use `gunicorn` as process manager
+* Process numberer : `1000356-42.2019.8.26.0218`. I choose this one because it
+ would require executing queries in the three jurisdiction.
+
+```bash
+ ~> ./hey -m POST -d '{"process_number": "1000356-42.2019.8.26.0218","process_court":"TJSP"}' http://0.0.0.0:8000/query
+
+Summary:
+  Total:        17.3001 secs
+  Slowest:      5.5434 secs
+  Fastest:      1.8597 secs
+  Average:      4.0176 secs
+  Requests/sec: 11.5606
+
+  Total data:   2261600 bytes
+  Size/request: 11308 bytes
+
+Response time histogram:
+  1.860 [1]     |■
+  2.228 [2]     |■■
+  2.596 [3]     |■■■
+  2.965 [6]     |■■■■■■■
+  3.333 [29]    |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  3.702 [36]    |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  4.070 [31]    |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  4.438 [19]    |■■■■■■■■■■■■■■■■■■■■■
+  4.807 [28]    |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  5.175 [29]    |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  5.543 [16]    |■■■■■■■■■■■■■■■■■■
+
+
+Latency distribution:
+  10% in 3.0511 secs
+  25% in 3.5232 secs
+  50% in 3.8145 secs
+  75% in 4.6659 secs
+  90% in 5.0775 secs
+  95% in 5.1939 secs
+  99% in 5.5428 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:   0.0005 secs, 1.8597 secs, 5.5434 secs
+  DNS-lookup:   0.0000 secs, 0.0000 secs, 0.0000 secs
+  req write:    0.0001 secs, 0.0000 secs, 0.0050 secs
+  resp wait:    4.0170 secs, 1.8597 secs, 5.5421 secs
+  resp read:    0.0000 secs, 0.0000 secs, 0.0002 secs
+
+Status code distribution:
+  [200] 200 responses
+
+```
+
 ### Stack
 
 #### Web framework
