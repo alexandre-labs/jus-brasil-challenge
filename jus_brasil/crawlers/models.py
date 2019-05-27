@@ -57,7 +57,7 @@ class QueryInput(BaseModel):
 
 class QueryOutput(BaseModel):
 
-    first_juristiction: Process
+    first_juristiction: t.Optional[Process]
 
     second_juristiction: t.List[t.Optional[Process]]
 
