@@ -32,7 +32,7 @@ update-deps: clean
 
 flake8:
 	@echo "${YELLOW}Checking flake8...${NC}\n"
-	@if ! poetry run flake8 eight_ball; then \
+	@if ! poetry run flake8 jus_brasil; then \
 	echo "${RED}\nflake8 failed${NC}"; \
 	    exit_code=2; \
 	else \
