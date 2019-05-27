@@ -17,8 +17,11 @@ async def _extract_unified_year_and_jurisdiction(process_number: str) -> t.Seque
 
 
 async def get_process_page(session: aiohttp.ClientSession, process_url: str):
-    async with session.get(process_url, ssl=False) as response:
-        return await response.text()
+    try:
+        async with session.get(process_url, ssl=False) as response:
+            return await response.text()
+    except aiohttp.client_exceptions.TooManyRedirects:
+        return ""
 
 
 async def download_process_page(process_url: str):
