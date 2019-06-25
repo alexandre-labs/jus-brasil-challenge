@@ -1,5 +1,10 @@
 # Jus Brasil - Backend Engineer Challenge
 
+## Watch out!
+
+This is not a real project, just a challenge/test. I'm keeping the code open to try to make some improvements and learn more
+about the challenge.
+
 The challenge description is available in the dir. `docs`.
 
 ## Badges
