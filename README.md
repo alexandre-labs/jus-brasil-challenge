@@ -3,7 +3,7 @@
 ## Watch out!
 
 This is not a real project, just a challenge/test. I'm keeping the code open to try to make some improvements and learn more
-about the challenge.
+about the challenge, as I do not have a blog or something similar.
 
 The challenge description is available in the dir. `docs`.
 
